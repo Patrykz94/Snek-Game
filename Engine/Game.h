@@ -54,7 +54,7 @@ private:
 	std::mt19937 rng;
 	Goal goal;
 	int snekMovePeriod;
-	int snekMoveCounter = 0;
+	float snekMoveCounter = 0.0f;
 	bool gameIsOver = false;
 	bool gameIsStarted = false;
 	bool snekSupercharge = false;

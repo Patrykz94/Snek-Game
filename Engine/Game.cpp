@@ -85,8 +85,8 @@ void Game::UpdateModel()
 				snekSupercharge = false;
 			}
 
-			++snekMoveCounter;
-			if (snekMoveCounter >= snekMovePeriod || snekSupercharge && snekMoveCounter >= snekMovePeriod / 2)
+			snekMoveCounter += dt;
+			if (snekMoveCounter * 60 >= snekMovePeriod || snekSupercharge && snekMoveCounter * 60 >= snekMovePeriod / 2)
 			{
 				snekMoveCounter = 0;
 				const Location next = snek.GetNextHeadLocation(delta_loc);
