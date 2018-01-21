@@ -91,7 +91,8 @@ void Game::UpdateModel()
 				snekMoveCounter = 0;
 				const Location next = snek.GetNextHeadLocation(delta_loc);
 				if (!brd.IsInsideBoard(next) ||
-					snek.IsInTileExceptEnd(next))
+					snek.IsInTileExceptEnd(next) ||
+					brd.CheckForObstacle(next))
 				{
 					gameIsOver = true;
 				}
@@ -106,6 +107,7 @@ void Game::UpdateModel()
 					if (eating)
 					{
 						goal.Respawn(rng, brd, snek);
+						brd.SpawnObstacle(rng, snek, goal);
 						if (snekMovePeriod > 10)
 						{
 							if (snek.GetLenght() % 5 == 4)
@@ -127,6 +129,7 @@ void Game::UpdateModel()
 void Game::ComposeFrame()
 {
 	brd.DrawBoard();
+	brd.DrawObstacle();
 	goal.Draw(brd);
 	snek.Draw(brd);
 	if (gameIsOver)
