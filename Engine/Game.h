@@ -25,7 +25,6 @@
 #include "Graphics.h"
 #include "Board.h"
 #include "Snake.h"
-#include "Goal.h"
 #include <random>
 #include "FrameTimer.h"
 
@@ -52,9 +51,10 @@ private:
 	Snake snek;
 	Location delta_loc = { 1,0 };
 	std::mt19937 rng;
-	Goal goal;
 	int snekMovePeriod;
 	float snekMoveCounter = 0.0f;
+	static constexpr int nCocaine = 240;
+	static constexpr int nFood = 12;
 	bool gameIsOver = false;
 	bool gameIsStarted = false;
 	bool snekSupercharge = false;

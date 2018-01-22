@@ -1,12 +1,12 @@
 #include "Board.h"
 #include "Snake.h"
-#include "Goal.h"
 #include <assert.h>
 
 Board::Board(Graphics & gfx)
 	:
 	gfx(gfx)
-{}
+{
+}
 
 void Board::DrawBoard()
 {
@@ -29,20 +29,6 @@ void Board::DrawCell(const Location& loc, Color c)
 	gfx.DrawRectDim(loc.x * dimension + 1 + boardX, loc.y * dimension + 1 + boardY, dimension -2, dimension -2, c);
 }
 
-void Board::DrawObstacle()
-{
-	for (int x = 0; x < width; x++)
-	{
-		for (int y = 0; y < height; y++)
-		{
-			if (CheckForObstacle({ x,y }))
-			{
-				DrawCell({ x,y }, obstacleColor);
-			}
-		}
-	}
-}
-
 int Board::GetGridWidth() const
 {
 	return width;
@@ -59,12 +45,18 @@ bool Board::IsInsideBoard(const Location & loc) const
 		loc.y >= 0 && loc.y < height;
 }
 
-bool Board::CheckForObstacle(const Location & loc) const
+int Board::GetContents(const Location & loc) const
 {
-	return hasObstacle[loc.y * width + loc.x];
+	return contents[loc.y * width + loc.x];
 }
 
-void Board::SpawnObstacle(std::mt19937 & rng, const Snake & snake, const Goal & goal)
+void Board::ConsumeContents(const Location & loc)
+{
+	assert(GetContents(loc) == 2 || GetContents(loc) == 3);
+	contents[loc.y * width + loc.x] = 0;
+}
+
+void Board::SpawnContents(std::mt19937 & rng, const Snake & snake, int contentsType)
 {
 	std::uniform_int_distribution<int> xDist(0, GetGridWidth() - 1);
 	std::uniform_int_distribution<int> yDist(0, GetGridHeight() - 1);
@@ -74,7 +66,33 @@ void Board::SpawnObstacle(std::mt19937 & rng, const Snake & snake, const Goal & 
 	{
 		newLoc.x = xDist(rng);
 		newLoc.y = yDist(rng);
-	} while (snake.IsInTile(newLoc) || CheckForObstacle(newLoc) || goal.GetLocation() == newLoc);
+	} while (snake.IsInTile(newLoc) || GetContents(newLoc) != 0);
 
-	hasObstacle[newLoc.y * width + newLoc.x] = true;
+	contents[newLoc.y * width + newLoc.x] = contentsType;
+}
+
+void Board::DrawCells()
+{
+	for (int x = 0; x < width; x++)
+	{
+		for (int y = 0; y < height; y++)
+		{
+			if (GetContents({ x,y }) != 0)
+			{
+				const int contents = GetContents({ x,y });
+				if (contents == 1)
+				{
+					DrawCell({ x,y }, obstacleColor);
+				}
+				else if (contents == 2)
+				{
+					DrawCell({ x,y }, foodColor);
+				}
+				else if (contents == 3)
+				{
+					DrawCell({ x,y }, cocaineColor);
+				}
+			}
+		}
+	}
 }

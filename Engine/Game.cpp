@@ -26,11 +26,18 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	brd(gfx),
 	rng(std::random_device()()),
-	snek({ 2,2 }),
-	goal(rng, brd, snek)
+	brd(gfx),
+	snek({ 2,2 })
 {
+	for (int i = 0; i < nCocaine; i++)
+	{
+		brd.SpawnContents(rng, snek, 3);
+	}
+	for (int i = 0; i < nFood; i++)
+	{
+		brd.SpawnContents(rng, snek, 2);
+	}
 	snekMovePeriod = 20;
 }
 
@@ -90,32 +97,32 @@ void Game::UpdateModel()
 			{
 				snekMoveCounter = 0;
 				const Location next = snek.GetNextHeadLocation(delta_loc);
+				const int contents = brd.GetContents(next);
 				if (!brd.IsInsideBoard(next) ||
 					snek.IsInTileExceptEnd(next) ||
-					brd.CheckForObstacle(next))
+					contents == 1)
 				{
 					gameIsOver = true;
 				}
-				else
+				else if (contents == 2)
 				{
-					bool eating = next == goal.GetLocation();
-					if (eating)
-					{
-						snek.Grow();
-					}
+					brd.ConsumeContents(next);
+					snek.Grow();
 					snek.MoveBy(delta_loc);
-					if (eating)
+					brd.SpawnContents(rng, snek, 2);
+					brd.SpawnContents(rng, snek, 1);
+				}
+				else if (contents == 3)
+				{
+					brd.ConsumeContents(next);
+					snek.MoveBy(delta_loc);
+					if (snekMovePeriod > 3)
 					{
-						goal.Respawn(rng, brd, snek);
-						brd.SpawnObstacle(rng, snek, goal);
-						if (snekMovePeriod > 10)
-						{
-							if (snek.GetLenght() % 5 == 4)
-							{
-								snekMovePeriod--;
-							}
-						}
+						snekMovePeriod--;
 					}
+				}
+				else {
+					snek.MoveBy(delta_loc);
 				}
 			}
 		}
@@ -129,8 +136,7 @@ void Game::UpdateModel()
 void Game::ComposeFrame()
 {
 	brd.DrawBoard();
-	brd.DrawObstacle();
-	goal.Draw(brd);
+	brd.DrawCells();
 	snek.Draw(brd);
 	if (gameIsOver)
 	{
