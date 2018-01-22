@@ -6,15 +6,23 @@
 class Board
 {
 public:
+	enum class CellContents : char
+	{
+		Empty,
+		Obstacle,
+		Food,
+		Cocaine
+	};
+public:
 	Board(Graphics& gfx);
 	void DrawBoard();
 	void DrawCell(const Location& loc, Color c);
 	int GetGridWidth() const;
 	int GetGridHeight() const;
 	bool IsInsideBoard(const Location& loc) const;
-	int GetContents(const Location& loc) const;
+	CellContents GetContents(const Location& loc) const;
 	void ConsumeContents(const Location& loc);
-	void SpawnContents(std::mt19937& rng, const class Snake& snake, int contentsType);
+	void SpawnContents(std::mt19937& rng, const class Snake& snake, CellContents contentsType);
 	void DrawCells();
 private:
 	static constexpr int dimension = 20;
@@ -29,6 +37,6 @@ private:
 	static constexpr Color cocaineColor = Colors::White;
 	static constexpr Color boardColor = Colors::MakeRGB(20,20,20);
 	// 0:empty 1:obstacle 2:food 3:cocaine-speedup
-	int contents[width * height] = { 0 };
+	CellContents contents[width * height] = { CellContents::Empty };
 	Graphics& gfx;
 };
