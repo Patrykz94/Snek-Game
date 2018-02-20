@@ -1,5 +1,5 @@
 #pragma once
-
+#include <vector>
 #include "Board.h"
 
 class Snake
@@ -8,6 +8,9 @@ private:
 	class Segment
 	{
 	public:
+		Segment() = default;
+		Segment(Color c);
+		Segment(Location loc);
 		void InitHead(const Location& in_loc);
 		void InitBody(Color c);
 		void Follow(const Segment& next);
@@ -30,7 +33,15 @@ public:
 	int GetLenght() const;
 private:
 	static constexpr Color headColor = Colors::Yellow;
-	static constexpr int nSegmentsMax = 100;
-	Segment segments[nSegmentsMax];
-	int nSegments = 1;
+	static constexpr int nBodyColors = 4;
+	std::vector<Color> bodyColors = {
+		{ 10, 100, 32 },
+		{ 10, 130, 48 },
+		{ 18, 160, 48 },
+		{ 10, 130, 48 }
+	};
+	//static constexpr int nSegmentsMax = 100;
+	//Segment segments[nSegmentsMax];
+	//int nSegments = 1;
+	std::vector<Segment> segments;
 };

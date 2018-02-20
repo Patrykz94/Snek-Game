@@ -69,5 +69,7 @@ int Config::Get(Option option) const
 		return poisonAmount;
 	case Option::GoalAmount:
 		return goalAmount;
+	default:
+		return 0;
 	}
 }
