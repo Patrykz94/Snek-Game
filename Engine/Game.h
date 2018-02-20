@@ -27,6 +27,7 @@
 #include "Snake.h"
 #include <random>
 #include "FrameTimer.h"
+#include "Config.h"
 
 class Game
 {
@@ -46,6 +47,7 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
+	Config config = "Config/config.txt";
 	FrameTimer ft;
 	Board brd;
 	Snake snek;
@@ -53,8 +55,8 @@ private:
 	std::mt19937 rng;
 	int snekMovePeriod;
 	float snekMoveCounter = 0.0f;
-	static constexpr int nCocaine = 240;
-	static constexpr int nFood = 12;
+	int nCocaine;	// default 240
+	int nFood;	// default 12
 	bool gameIsOver = false;
 	bool gameIsStarted = false;
 	bool snekSupercharge = false;

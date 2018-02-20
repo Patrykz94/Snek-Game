@@ -1,0 +1,8 @@
+[Tile Size]
+20
+[Board Size]
+39 29
+[Poison Amount]
+240
+[Goal Amount]
+12

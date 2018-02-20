@@ -27,9 +27,11 @@ Game::Game(MainWindow& wnd)
 	wnd(wnd),
 	gfx(wnd),
 	rng(std::random_device()()),
-	brd(gfx),
+	brd(gfx, config),
 	snek({ 2,2 })
 {
+	nCocaine = config.Get(Config::Option::PoisonAmount);
+	nFood = config.Get(Config::Option::GoalAmount);
 	for (int i = 0; i < nCocaine; i++)
 	{
 		brd.SpawnContents(rng, snek, Board::CellContents::Cocaine);

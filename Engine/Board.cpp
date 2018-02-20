@@ -2,10 +2,20 @@
 #include "Snake.h"
 #include <assert.h>
 
-Board::Board(Graphics & gfx)
+Board::Board(Graphics & gfx, const Config& config)
 	:
-	gfx(gfx)
+	gfx(gfx),
+	dimension(config.Get(Config::Option::TileSize)),
+	width(config.Get(Config::Option::BoardWidth)),
+	height(config.Get(Config::Option::BoardHeight)),
+	contents(new CellContents[width * height]{ CellContents::Empty })
 {
+}
+
+Board::~Board()
+{
+	delete[] contents;
+	contents = nullptr;
 }
 
 void Board::DrawBoard()
@@ -52,7 +62,7 @@ Board::CellContents Board::GetContents(const Location & loc) const
 
 void Board::ConsumeContents(const Location & loc)
 {
-	assert(GetContents(loc) == 2 || GetContents(loc) == 3);
+	assert(GetContents(loc) == CellContents::Food || GetContents(loc) == CellContents::Cocaine);
 	contents[loc.y * width + loc.x] = CellContents::Empty;
 }
 
