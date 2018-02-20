@@ -8,15 +8,8 @@ Board::Board(Graphics & gfx, const Config& config)
 	dimension(config.Get(Config::Option::TileSize)),
 	width(config.Get(Config::Option::BoardWidth)),
 	height(config.Get(Config::Option::BoardHeight)),
-	contents(new CellContents[width * height]{ CellContents::Empty })
-{
-}
-
-Board::~Board()
-{
-	delete[] contents;
-	contents = nullptr;
-}
+	contents(width * height, CellContents::Empty)
+{}
 
 void Board::DrawBoard()
 {

@@ -13,7 +13,7 @@ Config::Config(const std::string& filename)
 			{
 				int tmp;
 				cfg >> tmp;
-				if (tmp >= 10 && tmp <= 50)
+				if (tmp >= 3 && tmp <= 100)
 				{
 					tileSize = tmp;
 				}
@@ -23,11 +23,11 @@ Config::Config(const std::string& filename)
 				int tmp;
 				int tmp2;
 				cfg >> tmp >> tmp2;
-				if (tmp >= 10 && tmp <= 39)
+				if (tmp >= 5 && tmp <= 500)
 				{
 					boardWidth = tmp;
 				}
-				if (tmp2 >= 10 && tmp2 <= 29)
+				if (tmp2 >= 5 && tmp2 <= 500)
 				{
 					boardHeight = tmp2;
 				}
@@ -36,7 +36,7 @@ Config::Config(const std::string& filename)
 			{
 				int tmp;
 				cfg >> tmp;
-				if (tmp >= 0 && tmp <= 500)
+				if (tmp >= 0 && tmp <= 10000)
 				{
 					poisonAmount = tmp;
 				}

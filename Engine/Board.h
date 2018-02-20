@@ -3,6 +3,7 @@
 #include "Location.h"
 #include <random>
 #include "Config.h"
+#include <vector>
 
 class Board
 {
@@ -16,9 +17,6 @@ public:
 	};
 public:
 	Board(Graphics& gfx, const Config& config);
-	Board(const Board&) = delete;
-	Board& operator=(const Board&) = delete;
-	~Board();
 	void DrawBoard();
 	void DrawCell(const Location& loc, Color c);
 	int GetGridWidth() const;
@@ -29,7 +27,7 @@ public:
 	void SpawnContents(std::mt19937& rng, const class Snake& snake, CellContents contentsType);
 	void DrawCells();
 private:
-	int dimension;	//	Tile size
+	int dimension;
 	int width;
 	int height;
 	static constexpr int borderThickness = 5;
@@ -40,7 +38,6 @@ private:
 	static constexpr Color foodColor = Colors::Red;
 	static constexpr Color cocaineColor = Colors::White;
 	static constexpr Color boardColor = Colors::MakeRGB(20,20,20);
-	//	0:empty 1:obstacle 2:food 3:cocaine-speedup
-	CellContents* contents = nullptr;
+	std::vector<CellContents> contents;
 	Graphics& gfx;
 };

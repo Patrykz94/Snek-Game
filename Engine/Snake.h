@@ -10,9 +10,7 @@ private:
 	public:
 		Segment() = default;
 		Segment(Color c);
-		Segment(Location loc);
-		void InitHead(const Location& in_loc);
-		void InitBody(Color c);
+		Segment(const Location& loc);
 		void Follow(const Segment& next);
 		void MoveBy(const Location& delta_loc);
 		void Draw(Board& brd) const;
@@ -40,8 +38,5 @@ private:
 		{ 18, 160, 48 },
 		{ 10, 130, 48 }
 	};
-	//static constexpr int nSegmentsMax = 100;
-	//Segment segments[nSegmentsMax];
-	//int nSegments = 1;
 	std::vector<Segment> segments;
 };
